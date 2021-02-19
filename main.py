@@ -51,6 +51,7 @@ def get_news():
 				break
 			last_news = news
 			send_notification(news)
+			break
 		if "Hard Fork" in news:
 			if last_news == "":
 				last_news = news
@@ -58,6 +59,7 @@ def get_news():
 				break
 			last_news = news
 			send_notification(news)
+			break
 
 
 last_news = ""
