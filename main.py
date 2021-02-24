@@ -72,7 +72,7 @@ def get_news():
 			last_news = news
 			send_notification(news)
 			try:
-				symbol = text.split("(")[-1].split(")")[0]
+				symbol = news.split("(")[-1].split(")")[0]
 				result = buy_symbol(symbol)
 			except Exception as e:
 				print(e)
