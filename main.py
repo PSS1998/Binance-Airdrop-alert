@@ -85,6 +85,35 @@ def get_news():
 			last_news = news
 			send_notification(news)
 			break
+			
+
+			
+
+			
+#from telethon import TelegramClient, events, sync
+
+#api_id = 
+#api_hash = ''
+#client = TelegramClient('latest_news', api_id, api_hash)			
+			
+#@client.on(events.NewMessage(chats='binance_announcements'))
+#async def event_handler(event):
+#        news = event.raw_text.split("\n")[0]
+#        print(datetime.datetime.now(), news)
+#        if "Airdrop" in news:
+#                try:
+#                        symbol = news.split("(")[-1].split(")")[0]
+#                        result = buy_symbol(symbol)
+#                except Exception as e: 
+#                        print(e)
+#                send_notification(news)
+#        elif "Hard Fork" in news:
+#                try:
+#                        symbol = news.split("(")[-1].split(")")[0]
+#                        result = buy_symbol(symbol)
+#                except Exception as e:
+#                        print(e)
+#                send_notification(news)
 
 
 last_news = ""
@@ -98,5 +127,10 @@ schedule.every(10).minutes.do(get_news)
 while True:
 	schedule.run_pending()
 	time.sleep(1)
+
+
+
+#with client:
+#        client.run_until_disconnected()
 
 
