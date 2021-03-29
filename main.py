@@ -11,6 +11,8 @@ import math
 
 import config
 
+#import binance-trader
+
 
 
 TOKEN='Insert your telgram token here'
@@ -22,6 +24,12 @@ def buy_symbol(symbol):
 	depth = client.get_order_book(symbol=market, limit=5)
 	lastBid = float(depth['bids'][0][0]) #last buy price (bid)
 	quantity = (amount / lastBid)
+#	takeProfitPct1 = "1"
+#	takeProfitPct2 = "5"
+#	stopLossPct = "3"
+#	Trader = trader.trader()
+#	order = Trader.trade_pct(market, quantity, takeProfitPct1, stopLossPct)
+#	order = Trader.trade_pct(market, quantity, takeProfitPct2, stopLossPct)
 	info = client.get_exchange_info()
 	symbol_info = [markett for markett in info['symbols'] if markett['symbol'] == market][0]
 	symbol_info['filters'] = {item['filterType']: item for item in symbol_info['filters']}
@@ -49,6 +57,8 @@ def send_notification(text):
 	for chat_id in chat_ids:
 		bot.send_message(chat_id=chat_id, text=text)
 
+		
+# get news from website
 def get_news():	
 	global last_news
 	try:
@@ -86,36 +96,6 @@ def get_news():
 			send_notification(news)
 			break
 			
-
-			
-
-			
-#from telethon import TelegramClient, events, sync
-
-#api_id = 
-#api_hash = ''
-#client = TelegramClient('latest_news', api_id, api_hash)			
-			
-#@client.on(events.NewMessage(chats='binance_announcements'))
-#async def event_handler(event):
-#        news = event.raw_text.split("\n")[0]
-#        print(datetime.datetime.now(), news)
-#        if "Airdrop" in news:
-#                try:
-#                        symbol = news.split("(")[-1].split(")")[0]
-#                        result = buy_symbol(symbol)
-#                except Exception as e: 
-#                        print(e)
-#                send_notification(news)
-#        elif "Hard Fork" in news:
-#                try:
-#                        symbol = news.split("(")[-1].split(")")[0]
-#                        result = buy_symbol(symbol)
-#                except Exception as e:
-#                        print(e)
-#                send_notification(news)
-
-
 last_news = ""
 
 bot = telegram.Bot(token=TOKEN)
@@ -127,10 +107,32 @@ schedule.every(10).minutes.do(get_news)
 while True:
 	schedule.run_pending()
 	time.sleep(1)
+			
 
+			
+# get news from telegram channel
 
+'''
+from telethon import TelegramClient, events, sync
 
-#with client:
-#        client.run_until_disconnected()
-
-
+api_id = 
+api_hash = ''
+client = TelegramClient('latest_news', api_id, api_hash)			
+			
+@client.on(events.NewMessage(chats='binance_announcements'))
+async def event_handler(event):
+	list = ["Airdrop", "Hard Fork", "Redenomination"]
+	news = event.raw_text.split("\n")[0]
+	if any(item in news for item in list):
+		try:
+			symbol = news.split("(")[-1].split(")")[0]
+			result = buy_symbol(symbol)
+		except Exception as e: 
+			print(e)
+		send_notification(news)
+	print(datetime.datetime.now(), news)
+	
+	
+with client:
+        client.run_until_disconnected()
+'''
